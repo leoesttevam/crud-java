@@ -29,10 +29,10 @@ public class GreetingsController {
 	private UsuarioRpository usuarioRepository;
     
 	
-    @RequestMapping(value = "/{name}", method = RequestMethod.GET) /* O / intercepta tudo que vem depois da porta 8000 */
+    @RequestMapping(value = "/mostrarnome/{name}", method = RequestMethod.GET) /* O / intercepta tudo que vem depois da porta 8000 */
     @ResponseStatus(HttpStatus.OK)
     public String greetingText(@PathVariable String name) {
-        return "Bem vindo ao curso Spring boot " + name + "!";
+        return "Curso Spring boot " + name + "!";
     }
     
     @RequestMapping(value = "/olamundo/{nome}", method = RequestMethod.GET)
@@ -102,5 +102,15 @@ public class GreetingsController {
     	Usuario user = usuarioRepository.saveAndFlush(usuario); //Vai salvar e atualizar atraves do banco de dados
     	
     	return new ResponseEntity<Usuario>(user, HttpStatus.OK);
+    }
+    
+    @GetMapping(value = "buscarPorNome") //mapear a url.
+    @ResponseBody //descrição da resposta.
+    public ResponseEntity<List<Usuario>> buscarPorNome(@RequestParam(name = "name") String name){ //Receber dados para consultar.
+    	
+    	
+    	List<Usuario> usuario = usuarioRepository.buscarPorNome(name.trim().toUpperCase());
+    	
+    	return new ResponseEntity<List<Usuario>>(usuario, HttpStatus.OK);
     }
 }
